@@ -73,24 +73,34 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         Container(
           width: 200,
           child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 print(usernameController.text);
                 print(passwordController.text);
                 ref.read(authControllerProvider.notifier).login(usernameController.text, passwordController.text);
-                if(ref.read(authControllerProvider.notifier).state != null){
-                  final user = ref.read(authControllerProvider.notifier).state;
-                  print("login successfully");
-                  sharedpreference("username", ref.read(user?.username.toString() as ProviderListenable));
-                  sharedpreference("email", ref.read(user?.email.toString() as ProviderListenable));
-                  sharedpreference("image", ref.read(user?.image.toString() as ProviderListenable));
-                  sharedpreference("gender", ref.read(user?.gender.toString() as ProviderListenable));
-                  sharedpreference("firstName", ref.read(user?.firstName.toString() as ProviderListenable));
-                  sharedpreference("lastName", ref.read(user?.lastName.toString() as ProviderListenable));
-                  sharedpreference("id", ref.read(user?.id.toString() as ProviderListenable));
-                  sharedpreference("accessToken", ref.read(user?.accessToken.toString() as ProviderListenable));
-                  sharedpreference("refreshToken", ref.read(user?.refreshToken.toString() as ProviderListenable));
+                final user = ref.read(authControllerProvider);
+                print(user);
+
+                if(user != null){
+                  print(user);
+
+                    print("login successfully");
+                    sharedpreference("username", user.username ?? '');
+                    sharedpreference("password", passwordController.text ?? '');
+                    sharedpreference("email", user.email ?? '');
+                    sharedpreference("image", user.image ?? '');
+                    sharedpreference("gender", user.gender ?? '');
+                    sharedpreference("firstName", user.firstName ?? '');
+                    sharedpreference("lastName", user.lastName ?? '');
+                    sharedpreference("id", user.id?.toString() ?? '');
+                    sharedpreference("accessToken", user.accessToken ?? '');
+                    sharedpreference("refreshToken", user.refreshToken ?? '');
+
+
 
                 }
+                var name = await getsharedpreference("username");
+                print(name);
+                print("name");
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfilePage()));
 
               }, child: Text("Login",style: TextStyle(

@@ -11,6 +11,8 @@ class AuthRepo{
   Future <AuthModel> login(String username, String password) async {
     print(username);
     print(password);
+    print(password);
+    print(password);
     final response = await http.post( Uri.parse(url),
     headers: {
       "Content-Type": "application/json"
@@ -28,6 +30,7 @@ class AuthRepo{
       print("dhdbhdb");
       return AuthModel.fromJson(jsonDecode(response.body));
     }else{
+      print("error");
       throw Exception("Something went wrong");
     }
   }
