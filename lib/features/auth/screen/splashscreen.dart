@@ -13,13 +13,27 @@ class Splashscreen extends StatefulWidget {
 
 class _SplashscreenState extends State<Splashscreen> {
   @override
-  getData() async{
-    await Future.delayed(Duration(seconds: 3));
-    var name=getsharedpreference("username");
+  Future<void> getData() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    final name = await getsharedpreference("username");
     print(name);
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => name==null?LoginPage():ProfilePage(),));
+    if (!mounted) return; // 👈 Safe check to avoid calling Navigator if widget disposed
+
+    if (name == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    }
   }
+
   @override
   void initState() {
     getData();
